@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Anime Hub</title>
+    <!-- استدعاء مكتبة Tailwind للتصميم -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* تصميم يشبه التطبيقات */
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: white; margin: 0; padding-bottom: 70px; -webkit-tap-highlight-color: transparent; }
+        .app-header { background: #1e293b; padding: 15px; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #334155; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #1e293b; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #334155; z-index: 50; }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 0.75rem; cursor: pointer; }
+        .nav-item.active { color: #8b5cf6; }
+        .anime-card { background: #1e293b; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .anime-card img { width: 100%; height: 200px; object-fit: cover; }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header class="app-header text-center">
+        <h1 class="text-xl font-bold text-purple-400">تطبيق الأنمي</h1>
+        <p class="text-xs text-gray-400">أفضل الأنميات في مكان واحد</p>
+    </header>
+
+    <!-- المحتوى -->
+    <main class="p-4">
+        <!-- قسم البحث -->
+        <input type="text" id="searchInput" placeholder="ابحث عن أنمي..." class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700 text-white mb-4 outline-none focus:border-purple-500">
+        
+        <!-- شبكة الأنمي -->
+        <div id="animeGrid" class="grid grid-cols-2 gap-4">
+            <!-- سيتم إضافة الأنميات هنا عبر الجافاسكريبت -->
+        </div>
+    </main>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showPage('home')">الرئيسية</div>
+        <div class="nav-item" onclick="showPage('favorites')">المفضلة</div>
+    </nav>
+
+    <script>
+        // بيانات الأنمي (وهمية للتوضيح)
+        const animeData = [
+            { id: 1, title: 'جومجتسو كايسن', img: 'https://upload.wikimedia.org/wikipedia/en/2/2f/Jujutsu_Kaisen_volume_1.png', genre: 'أكشن' },
+            { id: 2, title: 'هجوم العملاق', img: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Shingeki_no_Kyojin_anime_key_visual.png', genre: 'أكشن' },
+            { id: 3, title: 'قاتل الشياطين', img: 'https://upload.wikimedia.org/wikipedia/en/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba,_volume_1.jpg', genre: 'أكشن' },
+            { id: 4, title: 'ناروتو', img: 'https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg', genre: 'مغامرة' }
+        ];
+
+        const grid = document.getElementById('animeGrid');
+
+        // دالة عرض الأنميات
+        function renderAnime(data) {
+            grid.innerHTML = data.map(anime => `
+                <div class="anime-card" onclick="openDetails(${anime.id})">
+                    <img src="${anime.img}" alt="${anime.title}">
+                    <div class="p-2">
+                        <h3 class="font-bold text-sm">${anime.title}</h3>
+                        <p class="text-xs text-gray-400">${anime.genre}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // البحث
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = animeData.filter(a => a.title.includes(query));
+            renderAnime(filtered);
+        });
+
+        // عند الضغط على أنمي
+        function openDetails(id) {
+            const anime = animeData.find(a => a.id === id);
+            alert(`فتح تفاصيل: ${anime.title}`);
+        }
+
+        // التنقل
+        function showPage(page) {
+            if(page === 'favorites') {
+                alert('قسم المفضلة قيد التطوير.');
+            } else {
+                renderAnime(animeData);
+            }
+        }
+
+        // التشغيل الأولي
+        renderAnime(animeData);
+    </script>
+</body>
+</html>
